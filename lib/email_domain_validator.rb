@@ -16,6 +16,10 @@ class EmailDomainValidator
     @validator.valid?(domain)
   end
 
+  def add_filter(filter_class, options={})
+    @validator = filter_class.new(@validator, options)
+  end
+
 private
 
   # @email

@@ -18,4 +18,14 @@ describe EmailDomainValidator do
       described_class.send(:get_domain, 'pants+spam@scipkr.co.jp').should == 'scipkr.co.jp'
     end
   end
+
+  describe '#add_filter' do
+    it 'wraps middleware with another middleware' do
+      EmailDomainValidator::Dummy.any_instance.should_receive :valid?
+
+      subject.add_filter(EmailDomainValidator::Dummy)
+
+      subject.valid?('test@localhost')
+    end
+  end
 end
