@@ -1,5 +1,6 @@
 require 'helper'
 require 'email_domain_validator'
+require 'email_domain_validator/dummy'
 
 describe EmailDomainValidator do
   it 'has version' do
@@ -23,9 +24,15 @@ describe EmailDomainValidator do
     it 'wraps middleware with another middleware' do
       EmailDomainValidator::Dummy.any_instance.should_receive :valid?
 
-      subject.add_filter(EmailDomainValidator::Dummy)
+      subject.add_filter(:dummy)
 
       subject.valid?('test@localhost')
+    end
+  end
+
+  describe '.constantize' do
+    it 'returns middleware constant' do
+      described_class.send(:constantize, 'email_domain_validator/dummy').should == EmailDomainValidator::Dummy
     end
   end
 end
